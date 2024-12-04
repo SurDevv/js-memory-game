@@ -1,8 +1,10 @@
 window.onload = function () {
   const boardDiv = document.querySelector(".board");
   const counter = document.querySelector(".score");
-  function divGenerator(nuberOfDivs) {
-    for (let i = 0; i <= nuberOfDivs - 1; i++) {
+  const stattBtn = document.querySelector(".start");
+  let inputValue = 8;
+  function divGenerator(inputValue) {
+    for (let i = 0; i <= inputValue - 1; i++) {
       const tileDiv = document.createElement("div");
       tileDiv.className = "tile";
       tileDiv.id = `${i + 1}`;
@@ -12,6 +14,17 @@ window.onload = function () {
   }
 
   boardDiv.addEventListener("click", getTileData);
+  stattBtn.addEventListener("click", () => {
+    const valueFromInput = document.querySelector(".tileNumbers").value;
+    const valueToNumber = Number(valueFromInput);
+    console.log(typeof valueToNumber);
+    // tutaj trzba dodać funkcje, która sprawdzi wartość wprowadzoną do inputa
+    if (typeof valueToNumber === "number") {
+      console.log("git");
+    } else {
+      console.log("nie działa");
+    }
+  });
   let tilesData = [];
   let userScore = 0;
 
@@ -37,10 +50,9 @@ window.onload = function () {
         });
       }
       console.log("Kafelki w tablicy:", tilesData);
-
       console.log("----------------");
     }
   }
 
-  divGenerator(4);
+  divGenerator(inputValue);
 };
