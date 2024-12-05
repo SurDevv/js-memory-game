@@ -2,7 +2,6 @@ window.onload = function () {
   const boardDiv = document.querySelector(".board");
   const counter = document.querySelector(".score");
   const stattBtn = document.querySelector(".start");
-  let inputValue = 8;
   function divGenerator(inputValue) {
     for (let i = 0; i <= inputValue - 1; i++) {
       const tileDiv = document.createElement("div");
@@ -16,15 +15,18 @@ window.onload = function () {
   boardDiv.addEventListener("click", getTileData);
   stattBtn.addEventListener("click", () => {
     const valueFromInput = document.querySelector(".tileNumbers").value;
-    const valueToNumber = Number(valueFromInput);
-    console.log(typeof valueToNumber);
-    // tutaj trzba dodać funkcje, która sprawdzi wartość wprowadzoną do inputa
-    if (typeof valueToNumber === "number") {
-      console.log("git");
+    const numericValue = Number(valueFromInput);
+    if (!isNaN(numericValue)) {
+      if (Number.isInteger(numericValue)) {
+        divGenerator(numericValue);
+      } else {
+        alert("Proszę podać liczbę całkowitą.");
+      }
     } else {
-      console.log("nie działa");
+      alert("Proszę podać liczbę.");
     }
   });
+
   let tilesData = [];
   let userScore = 0;
 
@@ -53,6 +55,4 @@ window.onload = function () {
       console.log("----------------");
     }
   }
-
-  divGenerator(inputValue);
 };
