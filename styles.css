@@ -31,3 +31,7 @@
 .clicked {
   background-color: aqua;
 }
+
+.none {
+  display: none;
+}

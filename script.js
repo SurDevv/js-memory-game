@@ -1,17 +1,17 @@
 window.onload = function () {
   const boardDiv = document.querySelector(".board");
   const counter = document.querySelector(".score");
-  const stattBtn = document.querySelector(".start");
+  const startBtn = document.querySelector(".start");
 
   boardDiv.addEventListener("click", getTileData);
-  stattBtn.addEventListener("click", () => {
+  startBtn.addEventListener("click", () => {
     const valueFromInput = document.querySelector(".tileNumbers").value;
     const numericValue = Number(valueFromInput);
     if (!isNaN(numericValue)) {
       if (Number.isInteger(numericValue)) {
-        let table = createdTable(numericValue);
-        let shuffledTable = shufflingTable(table);
-        divGenerator(shuffledTable);
+        let table = createTable(numericValue);
+        let shuffledTable = shuffleTable(table);
+        generateDivs(shuffledTable);
       } else {
         alert("Proszę podać liczbę całkowitą.");
       }
@@ -20,17 +20,17 @@ window.onload = function () {
     }
   });
 
-  function shufflingTable(table) {
+  function shuffleTable(table) {
     for (let i = table.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
-      let k = table[i];
+      let temp = table[i];
       table[i] = table[j];
-      table[j] = k;
+      table[j] = temp;
     }
     return table;
   }
 
-  function createdTable(inputValue) {
+  function createTable(inputValue) {
     let tiles = [];
     for (let i = 1; i <= inputValue / 2; i++) {
       tiles.push(i);
@@ -39,7 +39,7 @@ window.onload = function () {
     return tiles;
   }
 
-  function divGenerator(generatedTable) {
+  function generateDivs(generatedTable) {
     console.log(generatedTable);
     boardDiv.innerHTML = "";
     for (let i = 0; i < generatedTable.length; i++) {
@@ -52,37 +52,50 @@ window.onload = function () {
 
   let tilesData = [];
   let userScore = 0;
-  const table = document.createElement("p");
-  table.textContent = `Twoje punkty: ${userScore}`;
-  counter.appendChild(table);
+  const score = document.createElement("p");
+  score.className = "user-score";
+  score.textContent = `Twoje punkty: ${userScore}`;
+  counter.appendChild(score);
 
   function getTileData(event) {
     const target = event.target;
     if (target.classList.contains("clicked")) {
-      console.log("Wybierz inny kafelek");
+      alert("Wybierz inny kafelek");
     } else if (target.classList.contains("tile")) {
       const selectedTile = target.textContent;
-      console.log("wybrano kafelek:", selectedTile);
       tilesData.push(selectedTile);
       target.classList.add("clicked");
 
-      if (tilesData.length > 2) {
-        compareValue();
+      if (tilesData.length >= 2) {
+        compareValues();
         tilesData.length = 0;
+
         const resetClass = document.querySelectorAll(".tile.clicked");
-        resetClass.forEach((tile) => {
-          tile.classList.remove("clicked");
-        });
+        setTimeout(() => {
+          resetClass.forEach((tile) => {
+            tile.classList.remove("clicked");
+          });
+        }, 1000);
       }
-      console.log("Kafelki w tablicy:", tilesData);
-      console.log("----------------");
     }
   }
 
-  function compareValue() {
+  function compareValues() {
     if (tilesData[0] == tilesData[1]) {
       userScore++;
-      console.log("git, punkt");
+      const playerScore = document.querySelector(".user-score");
+      playerScore.innerHTML = `Twoje punkty: ${userScore}`;
+      removeTiles();
+      console.log("git");
+    } else {
+      console.log("źle");
     }
+  }
+
+  function removeTiles() {
+    const clickedTiles = document.querySelectorAll(".tile.clicked");
+    clickedTiles.forEach((tile) => {
+      tile.classList.add("none");
+    });
   }
 };
