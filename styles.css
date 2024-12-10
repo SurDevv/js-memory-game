@@ -25,13 +25,13 @@
 }
 
 .tile:hover {
-  background-color: rgb(131, 47, 32);
+  cursor: pointer;
 }
 
 .clicked {
   background-color: aqua;
 }
 
-.none {
-  display: none;
+.done {
+  background-color: green;
 }
