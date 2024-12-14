@@ -3,17 +3,17 @@ window.onload = function () {
   const valuesToShuffle = valuesGenerator(valuesArray);
   const shuffledValues = shuffleValues(valuesToShuffle);
   const readyBoard = assignValue(shuffledValues);
-  console.log(readyBoard);
 };
 
 function generateTiles() {
   const numberOfTiles = 20;
   const boardGame = document.querySelector(".board");
-  for (i = 0; i < numberOfTiles; i++) {
+  for (let i = 0; i < numberOfTiles; i++) {
     const generatedTile = document.createElement("div");
     generatedTile.className = "tile";
     boardGame.appendChild(generatedTile);
   }
+
   return numberOfTiles;
 }
 
@@ -27,9 +27,14 @@ function valuesGenerator(numberOfTiles) {
 }
 
 function assignValue(valuesToAssign) {
-  const tiles = document.querySelectorAll(".tile");
-  tiles.forEach((tile, index) => {
+  const allTiles = document.querySelectorAll(".tile");
+
+  allTiles.forEach((tile, index) => {
     tile.textContent = valuesToAssign[index];
+    tile.addEventListener("click", function () {
+      getTileData(tile);
+      tile.classList.add("clicked");
+    });
   });
 }
 
@@ -41,4 +46,26 @@ function shuffleValues(valuesToShuffle) {
     valuesToShuffle[j] = temp;
   }
   return valuesToShuffle;
+}
+
+let clickNumber = 0;
+let valuesToCompare = [];
+function getTileData(tile) {
+  if (tile.classList.contains("clicked")) {
+    console.log("Wybierz inny kafelek");
+  } else {
+    valuesToCompare[clickNumber] = tile.textContent;
+    clickNumber++;
+  }
+
+  if (
+    valuesToCompare.length <= 2 &&
+    valuesToCompare[0] === valuesToCompare[1]
+  ) {
+    console.log("git");
+    clickNumber = 0;
+    valuesToCompare = [];
+  } else {
+    console.log("zle");
+  }
 }
