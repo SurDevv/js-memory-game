@@ -54,18 +54,30 @@ function getTileData(tile) {
   if (tile.classList.contains("clicked")) {
     console.log("Wybierz inny kafelek");
   } else {
-    valuesToCompare[clickNumber] = tile.textContent;
+    valuesToCompare[clickNumber] = parseInt(tile.textContent);
     clickNumber++;
+    console.log(valuesToCompare);
+    console.log(clickNumber);
   }
 
-  if (
-    valuesToCompare.length <= 2 &&
-    valuesToCompare[0] === valuesToCompare[1]
-  ) {
-    console.log("git");
-    clickNumber = 0;
-    valuesToCompare = [];
-  } else {
-    console.log("zle");
+  if (clickNumber === 2) {
+    if (valuesToCompare[0] == valuesToCompare[1]) {
+      console.log("git");
+      clickNumber = 0;
+      valuesToCompare.length = 0;
+      setTimeout(clearClass, 1000);
+    } else {
+      clickNumber = 0;
+      valuesToCompare.length = 0;
+      setTimeout(clearClass, 1000);
+      console.log("nie giut");
+    }
   }
+}
+
+function clearClass() {
+  const elementsToClear = document.querySelectorAll(".clicked");
+  elementsToClear.forEach((elementsToClear) =>
+    elementsToClear.classList.remove("clicked")
+  );
 }
