@@ -1,8 +1,37 @@
+let userScore;
+let userPoints = 0;
+let clickNumber = 0;
+let valuesToCompare = [];
+
 window.onload = function () {
-  const valuesArray = generateTiles();
-  const valuesToShuffle = valuesGenerator(valuesArray);
-  const shuffledValues = shuffleValues(valuesToShuffle);
-  const readyBoard = assignValue(shuffledValues);
+  const startButton = document.querySelector("button");
+  startButton.addEventListener("click", () => {
+    if (startButton.textContent === "Start") {
+      startGame();
+      startButton.textContent = "Reset";
+    } else {
+      resetGame();
+    }
+  });
+
+  function startGame() {
+    const valuesArray = generateTiles();
+    const valuesToShuffle = valuesGenerator(valuesArray);
+    const shuffledValues = shuffleValues(valuesToShuffle);
+    assignValue(shuffledValues);
+    userScore = document.querySelector(".score");
+    userScore.textContent = userPoints;
+  }
+
+  function resetGame() {
+    userPoints = 0;
+    clickNumber = 0;
+    valuesToCompare = [];
+    userScore.textContent = userPoints;
+    const boardGame = document.querySelector(".board");
+    boardGame.innerHTML = "";
+    startGame();
+  }
 };
 
 function generateTiles() {
@@ -26,6 +55,16 @@ function valuesGenerator(numberOfTiles) {
   return tiles;
 }
 
+function shuffleValues(valuesToShuffle) {
+  for (let i = valuesToShuffle.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = valuesToShuffle[i];
+    valuesToShuffle[i] = valuesToShuffle[j];
+    valuesToShuffle[j] = temp;
+  }
+  return valuesToShuffle;
+}
+
 function assignValue(valuesToAssign) {
   const allTiles = document.querySelectorAll(".tile");
 
@@ -38,20 +77,8 @@ function assignValue(valuesToAssign) {
   });
 }
 
-function shuffleValues(valuesToShuffle) {
-  for (let i = valuesToShuffle.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = valuesToShuffle[i];
-    valuesToShuffle[i] = valuesToShuffle[j];
-    valuesToShuffle[j] = temp;
-  }
-  return valuesToShuffle;
-}
-
-let clickNumber = 0;
-let valuesToCompare = [];
 function getTileData(tile) {
-  if (tile.classList.contains("clicked")) {
+  if (tile.classList.contains("clicked") || tile.classList.contains("done")) {
     console.log("Wybierz inny kafelek");
   } else {
     valuesToCompare[clickNumber] = parseInt(tile.textContent);
@@ -65,19 +92,27 @@ function getTileData(tile) {
       console.log("git");
       clickNumber = 0;
       valuesToCompare.length = 0;
-      setTimeout(clearClass, 1000);
+      setTimeout(match, 1000);
     } else {
       clickNumber = 0;
       valuesToCompare.length = 0;
       setTimeout(clearClass, 1000);
-      console.log("nie giut");
+      console.log("nie git");
     }
   }
 }
 
 function clearClass() {
   const elementsToClear = document.querySelectorAll(".clicked");
-  elementsToClear.forEach((elementsToClear) =>
-    elementsToClear.classList.remove("clicked")
-  );
+  elementsToClear.forEach((element) => element.classList.remove("clicked"));
+}
+
+function match() {
+  userPoints++;
+  userScore.textContent = userPoints;
+  const elementsToClear = document.querySelectorAll(".clicked");
+  elementsToClear.forEach((element) => {
+    element.classList.remove("clicked");
+    element.classList.add("done");
+  });
 }

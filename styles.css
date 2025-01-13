@@ -26,6 +26,7 @@
 
 .tile:hover {
   cursor: pointer;
+  background-color: rgb(240, 74, 44);
 }
 
 .clicked {
@@ -34,4 +35,8 @@
 
 .done {
   background-color: green;
+}
+
+.none {
+  display: none;
 }
