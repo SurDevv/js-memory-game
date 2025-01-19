@@ -2,17 +2,22 @@
   margin: 0;
   padding: 0;
 }
+
 .main {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
 }
+
 .board {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
 }
+
 .tile {
   background-color: rgb(241, 105, 81);
   width: 50px;
@@ -20,8 +25,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   transition: 0.3s;
-  font-display: none;
+  background-size: cover;
+  background-position: center;
 }
 
 .tile:hover {
@@ -29,14 +36,21 @@
   background-color: rgb(240, 74, 44);
 }
 
-.clicked {
-  background-color: aqua;
+.tile::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgb(241, 105, 81);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.3s;
 }
 
-.done {
-  background-color: green;
+.tile.clicked::before {
+  opacity: 0;
 }
 
-.none {
-  display: none;
+.tile.done::before {
+  opacity: 0;
 }

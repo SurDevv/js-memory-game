@@ -2,6 +2,18 @@ let userScore;
 let userPoints = 0;
 let clickNumber = 0;
 let valuesToCompare = [];
+const obrazki = [
+  "./icons/bee.png",
+  "./icons/butterfly.png",
+  "./icons/chicken.png",
+  "./icons/clown-fish.png",
+  "./icons/cow.png",
+  "./icons/elephant.png",
+  "./icons/frog.png",
+  "./icons/lion.png",
+  "./icons/mouse.png",
+  "./icons/pig.png",
+];
 
 window.onload = function () {
   const startButton = document.querySelector("button");
@@ -69,7 +81,12 @@ function assignValue(valuesToAssign) {
   const allTiles = document.querySelectorAll(".tile");
 
   allTiles.forEach((tile, index) => {
-    tile.textContent = valuesToAssign[index];
+    const imageIndex = valuesToAssign[index] - 1;
+    const imageUrl = obrazki[imageIndex];
+
+    tile.style.backgroundImage = `url(${imageUrl})`;
+    tile.dataset.value = valuesToAssign[index];
+
     tile.addEventListener("click", function () {
       getTileData(tile);
       tile.classList.add("clicked");
@@ -79,26 +96,20 @@ function assignValue(valuesToAssign) {
 
 function getTileData(tile) {
   if (tile.classList.contains("clicked") || tile.classList.contains("done")) {
-    console.log("Wybierz inny kafelek");
-  } else {
-    valuesToCompare[clickNumber] = parseInt(tile.textContent);
-    clickNumber++;
-    console.log(valuesToCompare);
-    console.log(clickNumber);
+    return;
   }
 
+  valuesToCompare[clickNumber] = tile.dataset.value;
+  clickNumber++;
+
   if (clickNumber === 2) {
-    if (valuesToCompare[0] == valuesToCompare[1]) {
-      console.log("git");
-      clickNumber = 0;
-      valuesToCompare.length = 0;
+    if (valuesToCompare[0] === valuesToCompare[1]) {
       setTimeout(match, 1000);
     } else {
-      clickNumber = 0;
-      valuesToCompare.length = 0;
       setTimeout(clearClass, 1000);
-      console.log("nie git");
     }
+    clickNumber = 0;
+    valuesToCompare.length = 0;
   }
 }
 
@@ -110,6 +121,7 @@ function clearClass() {
 function match() {
   userPoints++;
   userScore.textContent = userPoints;
+
   const elementsToClear = document.querySelectorAll(".clicked");
   elementsToClear.forEach((element) => {
     element.classList.remove("clicked");
