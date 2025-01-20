@@ -2,7 +2,8 @@ let userScore;
 let userPoints = 0;
 let clickNumber = 0;
 let valuesToCompare = [];
-const obrazki = [
+let isClicable = true;
+const images = [
   "./icons/bee.png",
   "./icons/butterfly.png",
   "./icons/chicken.png",
@@ -33,6 +34,8 @@ window.onload = function () {
     assignValue(shuffledValues);
     userScore = document.querySelector(".score");
     userScore.textContent = userPoints;
+    const scoreDisplay = document.querySelector(".none");
+    scoreDisplay.classList.remove("none");
   }
 
   function resetGame() {
@@ -82,7 +85,7 @@ function assignValue(valuesToAssign) {
 
   allTiles.forEach((tile, index) => {
     const imageIndex = valuesToAssign[index] - 1;
-    const imageUrl = obrazki[imageIndex];
+    const imageUrl = images[imageIndex];
 
     tile.style.backgroundImage = `url(${imageUrl})`;
     tile.dataset.value = valuesToAssign[index];
@@ -95,10 +98,15 @@ function assignValue(valuesToAssign) {
 }
 
 function getTileData(tile) {
-  if (tile.classList.contains("clicked") || tile.classList.contains("done")) {
+  if (
+    (isClicable =
+      true ||
+      tile.classList.contains("clicked") ||
+      tile.classList.contains("done"))
+  ) {
     return;
   }
-
+  isClicable = false;
   valuesToCompare[clickNumber] = tile.dataset.value;
   clickNumber++;
 
@@ -114,6 +122,7 @@ function getTileData(tile) {
 }
 
 function clearClass() {
+  isClicable = true;
   const elementsToClear = document.querySelectorAll(".clicked");
   elementsToClear.forEach((element) => element.classList.remove("clicked"));
 }
@@ -121,6 +130,7 @@ function clearClass() {
 function match() {
   userPoints++;
   userScore.textContent = userPoints;
+  isClicable = true;
 
   const elementsToClear = document.querySelectorAll(".clicked");
   elementsToClear.forEach((element) => {
@@ -128,3 +138,5 @@ function match() {
     element.classList.add("done");
   });
 }
+
+//dodałem zmienną isClicable, która mna kontrolować czy da sie klikać

@@ -54,3 +54,7 @@
 .tile.done::before {
   opacity: 0;
 }
+
+.none {
+  display: none;
+}
